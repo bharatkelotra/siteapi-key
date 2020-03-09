@@ -1,0 +1,28 @@
+<?php
+use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+//Adding a new field (site api key)
+function api_module_form_alter(&$form, FormStateInterface $form_state, $form_id){
+   if ($form_id =='system_site_information_settings'){
+      $form['site_information']['siteapikey'] = array(
+      '#title' => t('Site API Key'),
+      '#description' => t('Site API Key'),
+      '#type' => 'textfield',
+      '#attributes' => array('placeholder' => t('No API Key yet')),
+      '#default_value' => \Drupal::configFactory()->getEditable('api_module.settings')->get('siteapikey')
+      );
+      $form['#submit'][] = 'api_module_node_form_submit';
+      $form['actions']['submit']['#value'] = 'Update Configuration';
+   }
+}
+
+// save the siteapikey as system variable
+function api_module_node_form_submit($form, FormStateInterface $form_state){
+   \Drupal::configFactory()->getEditable('api_module.settings')->set('siteapikey', $form_state->getValue('siteapikey'))->save();
+   $siteapikey = \Drupal::configFactory()->getEditable('api_module.settings')->get('siteapikey');
+   if(!empty($siteapikey)){
+      drupal_set_message(t('Site API Key has been saved with that '.$siteapikey));
+   }
+}

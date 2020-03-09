@@ -1,0 +1,6 @@
+name: Api Module
+type: module
+description: 'Custom module for site api key'
+package: Custom
+version: 8.x
+core: 8.x

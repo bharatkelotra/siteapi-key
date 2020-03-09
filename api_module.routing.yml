@@ -1,0 +1,7 @@
+api_module.list:
+  path: '/page_json/{key}/{node_id}'
+  defaults:
+    _controller: '\Drupal\api_module\Controller\ApiController::content'
+    _title: 'My first page in Drupal8'
+  requirements: 
+    _permission: 'access content'
